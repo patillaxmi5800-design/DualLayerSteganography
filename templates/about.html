@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}About - StegoSecure{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">&#8505; About StegoSecure</h1>
+        <p class="page-subtitle">Learn how dual layer steganography protects your secrets.</p>
+    </div>
+    <span class="badge">&#128737; Dual Layer Security</span>
+</div>
+
+<div class="main-card">
+    <p class="about-text">
+        StegoSecure is a Dual Layer Steganography application designed to protect confidential information.
+        The system combines AES Encryption with LSB Steganography.
+        The secret message is first encrypted and then hidden inside a digital image.
+        Only a user with the correct AES key can recover the original secret message.
+    </p>
+
+    <section class="card-grid">
+        <div class="feature-card">
+            <div class="feature-icon">&#128272;</div>
+            <h3>AES</h3>
+            <p>Provides encryption for the secret message.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#128444;</div>
+            <h3>LSB</h3>
+            <p>Hides encrypted data inside image pixels.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#128737;</div>
+            <h3>Security</h3>
+            <p>Provides two security layers.</p>
+        </div>
+    </section>
+
+    <div class="about-illustration">
+        <img src="{{ url_for('static', filename='images/security.png') }}" alt="Security illustration">
+    </div>
+</div>
+{% endblock %}

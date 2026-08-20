@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Decrypt - StegoSecure{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">&#128275; Decrypt Secret Message</h1>
+        <p class="page-subtitle">Extract and decrypt the hidden message from your stego image.</p>
+    </div>
+    <span class="badge">&#128737; Secure &amp; Private</span>
+</div>
+
+<div class="main-card">
+    <form method="POST" action="{{ url_for('decrypt') }}" enctype="multipart/form-data" id="decryptForm">
+        <div class="form-columns">
+            <div class="form-col">
+                <h3 class="section-title">&#128444; 1. Upload Stego Image</h3>
+                <label class="dropzone" id="dropzone" for="imageInput">
+                    <input type="file" name="image" id="imageInput" accept="image/*" hidden>
+                    <div class="dropzone-inner" id="dropzoneInner">
+                        <div class="dropzone-icon">&#128228;</div>
+                        <p class="dropzone-title">Click to Upload Image</p>
+                        <p class="dropzone-hint">Drag &amp; Drop or Browse</p>
+                        <p class="dropzone-formats">PNG</p>
+                    </div>
+                </label>
+            </div>
+
+            <div class="form-col">
+                <h3 class="section-title">&#128444; Image Preview</h3>
+                <div class="preview-box" id="previewBox">
+                    <div class="preview-placeholder" id="previewPlaceholder">
+                        <div class="preview-icon">&#128444;</div>
+                        <p>No Image Selected</p>
+                    </div>
+                    <img id="previewImage" class="preview-image" alt="Selected image preview" hidden>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="section-title">&#128273; Enter AES Secret Key</h3>
+        <div class="key-field">
+            <input type="password" name="key" id="keyInput" class="input" placeholder="Enter AES secret key">
+            <button type="button" class="key-toggle" data-target="keyInput" aria-label="Show or hide key">&#128065;</button>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">&#128275; Decrypt &amp; Extract Message</button>
+    </form>
+
+    {% if decrypted_message is defined and decrypted_message is not none %}
+    <div class="result-card">
+        <h3>&#128172; Decrypted Secret Message</h3>
+        <div class="decrypted-text">{{ decrypted_message }}</div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

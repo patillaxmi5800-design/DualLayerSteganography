@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StegoSecure{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-body">
+    <div class="auth-shell">
+        <div class="auth-decoration" aria-hidden="true">
+            <span class="bit">01001</span>
+            <span class="bit">10110</span>
+            <span class="bit">11010</span>
+            <span class="bit">00111</span>
+        </div>
+
+        <div class="auth-panel">
+            <div class="auth-brand">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="StegoSecure logo" class="auth-logo">
+                <h1>StegoSecure</h1>
+                <p>Dual Layer Steganography</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}" role="alert">
+                                <span class="alert-icon">{{ '✅' if category == 'success' else '❌' }}</span>
+                                <span>{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

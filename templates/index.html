@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Home - StegoSecure{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Welcome to StegoSecure</h1>
+        <p class="page-subtitle">Secure your secret messages using AES Encryption and LSB Steganography.</p>
+    </div>
+    <span class="badge">&#128737; Dual Layer Security</span>
+</div>
+
+<section class="hero">
+    <div class="hero-text">
+        <h2 class="hero-heading">Hide Your Message Securely</h2>
+        <p class="hero-description">
+            StegoSecure combines AES Encryption and LSB Steganography.
+            The secret message is first encrypted using AES.
+            The encrypted message is then hidden inside an image using LSB steganography.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('encrypt') }}" class="btn btn-primary">&#128274; Start Encrypting</a>
+            <a href="{{ url_for('decrypt') }}" class="btn btn-outline">&#128275; Decrypt Message</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='images/security.png') }}" alt="Security illustration">
+    </div>
+</section>
+
+<section class="card-grid">
+    <div class="feature-card">
+        <div class="feature-icon">&#128272;</div>
+        <h3>AES Encryption</h3>
+        <p>Your secret message is encrypted before it is hidden inside the image.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">&#128444;</div>
+        <h3>LSB Steganography</h3>
+        <p>The encrypted data is hidden inside the least significant bits of the image.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">&#128737;</div>
+        <h3>Dual Layer Security</h3>
+        <p>Combining encryption and steganography provides an additional layer of protection.</p>
+    </div>
+</section>
+{% endblock %}

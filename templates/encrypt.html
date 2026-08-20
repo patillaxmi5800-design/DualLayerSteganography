@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Encrypt - StegoSecure{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">&#128274; Encrypt Secret Message</h1>
+        <p class="page-subtitle">Hide your secret message inside an image using AES + LSB Steganography.</p>
+    </div>
+    <span class="badge">&#128737; Secure &amp; Private</span>
+</div>
+
+<div class="main-card">
+    <form method="POST" action="{{ url_for('encrypt') }}" enctype="multipart/form-data" id="encryptForm">
+        <div class="form-columns">
+            <div class="form-col">
+                <h3 class="section-title">&#128444; 1. Upload Cover Image</h3>
+                <label class="dropzone" id="dropzone" for="imageInput">
+                    <input type="file" name="image" id="imageInput" accept="image/*" hidden>
+                    <div class="dropzone-inner" id="dropzoneInner">
+                        <div class="dropzone-icon">&#128228;</div>
+                        <p class="dropzone-title">Click to Upload Image</p>
+                        <p class="dropzone-hint">Drag &amp; Drop or Browse</p>
+                        <p class="dropzone-formats">PNG, JPG, JPEG</p>
+                    </div>
+                </label>
+            </div>
+
+            <div class="form-col">
+                <h3 class="section-title">&#128444; Image Preview</h3>
+                <div class="preview-box" id="previewBox">
+                    <div class="preview-placeholder" id="previewPlaceholder">
+                        <div class="preview-icon">&#128444;</div>
+                        <p>No Image Selected</p>
+                    </div>
+                    <img id="previewImage" class="preview-image" alt="Selected image preview" hidden>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="section-title">&#128172; 2. Enter Secret Message</h3>
+        <textarea name="message" id="messageInput" class="textarea" rows="5"
+                  placeholder="Type your secret message here..."></textarea>
+
+        <h3 class="section-title">&#128273; 3. Enter AES Secret Key</h3>
+        <div class="key-field">
+            <input type="password" name="key" id="keyInput" class="input" placeholder="Enter AES secret key">
+            <button type="button" class="key-toggle" data-target="keyInput" aria-label="Show or hide key">&#128065;</button>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">&#128274; Encrypt &amp; Hide Message</button>
+    </form>
+
+    {% if download_ready %}
+    <div class="result-card">
+        <h3>&#8595; Download Stego Image</h3>
+        <p>Your encrypted image is ready. Download it and share it securely.</p>
+        <a href="{{ url_for('download') }}" class="btn btn-primary">&#8595; Download Stego Image</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

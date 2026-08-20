@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Error {{ code }} - StegoSecure{% endblock %}
+
+{% block content %}
+<div class="error-wrapper">
+    <div class="error-card">
+        <div class="error-code">{{ code }}</div>
+        <h2>Something went wrong</h2>
+        <p>{{ message }}</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">&#127968; Back to Home</a>
+    </div>
+</div>
+{% endblock %}
