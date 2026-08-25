@@ -67,7 +67,10 @@ class Config:
     MAX_CONTENT_LENGTH = MAX_CONTENT_LENGTH
 
     # SQLAlchemy / SQLite.
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{DATABASE_PATH}"
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        "DATABASE_URL",
+        f"sqlite:///{DATABASE_PATH}"
+)   
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Sensible session cookie hardening for a demo/production-style app.
