@@ -1,37 +1,76 @@
 {% extends "auth_base.html" %}
+
 {% block title %}Login - StegoSecure{% endblock %}
 
 {% block content %}
+
 <div class="auth-heading">
     <h2>Welcome Back</h2>
     <p>Sign in to continue</p>
 </div>
 
-<form method="POST" action="{{ url_for('login') }}{% if request.args.get('next') %}?next={{ request.args.get('next') }}{% endif %}" id="loginForm" novalidate>
-    <label class="field-label" for="identifierInput">&#128100; Username or Email</label>
-    <input type="text" name="identifier" id="identifierInput" class="input"
-           placeholder="Enter your username or email" autocomplete="username"
-           value="{{ identifier or '' }}">
+<form method="POST"
+      action="{{ url_for('login') }}"
+      id="loginForm"
+      novalidate>
 
-    <label class="field-label" for="passwordInput">&#128273; Password</label>
+    <label class="field-label" for="identifierInput">
+        👤 Username or Email
+    </label>
+
+    <input
+        type="text"
+        name="identifier"
+        id="identifierInput"
+        class="input"
+        placeholder="Enter your username or email"
+        autocomplete="username"
+        value="{{ identifier or '' }}"
+        required
+    >
+
+    <label class="field-label" for="passwordInput">
+        🔑 Password
+    </label>
+
     <div class="key-field">
-        <input type="password" name="password" id="passwordInput" class="input"
-               placeholder="Enter your password" autocomplete="current-password">
-        <button type="button" class="key-toggle" data-target="passwordInput" aria-label="Show or hide password">&#128065;</button>
+
+        <input
+            type="password"
+            name="password"
+            id="passwordInput"
+            class="input"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+        >
+
+        <button
+            type="button"
+            class="key-toggle"
+            data-target="passwordInput"
+            aria-label="Show or hide password">
+            👁
+        </button>
+
     </div>
 
-    <button type="submit" class="btn btn-primary btn-block">&#128272; Login</button>
+    <!-- FORGOT PASSWORD -->
+    <div class="forgot-password">
+        <a href="{{ url_for('forgot_password') }}">
+            Forgot Password?
+        </a>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">
+        🔒 Login
+    </button>
+
 </form>
 
-<div class="demo-info" id="demoInfo"
-     data-username="{{ demo_username }}" data-password="{{ demo_password }}">
-    <div class="demo-info-head">
-        <span>&#127916; Demo Account</span>
-        <button type="button" class="demo-fill" id="demoFill">Use demo</button>
-    </div>
-    <p class="demo-line">Username: <code>{{ demo_username }}</code></p>
-    <p class="demo-line">Password: <code>{{ demo_password }}</code></p>
-</div>
+<p class="auth-switch">
+    Don't have an account?
+    <a href="{{ url_for('register') }}">Create Account</a>
+</p>
 
-<p class="auth-switch">Don't have an account? <a href="{{ url_for('register') }}">Create Account</a></p>
 {% endblock %}

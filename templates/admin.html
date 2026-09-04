@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1>🛡️ Admin Dashboard</h1>
+            <p class="text-muted">
+                Manage registered users and monitor the StegoSecure system.
+            </p>
+        </div>
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="row mb-4">
+
+        <!-- Total Users -->
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h6 class="text-muted">Total Users</h6>
+                <h2>{{ total_users }}</h2>
+            </div>
+        </div>
+
+        <!-- Administrator -->
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h6 class="text-muted">Administrator</h6>
+                <h5>{{ current_user.username }}</h5>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h6 class="text-muted">System Status</h6>
+                <h5>🟢 Active</h5>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Registered Users Card -->
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <!-- Users Heading -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0">👥 Registered Users</h3>
+            </div>
+
+
+            <!-- Search -->
+            <form method="GET" action="{{ url_for('admin') }}" class="mb-4">
+
+                <div class="input-group">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search by name, username or email..."
+                        value="{{ search or '' }}"
+                    >
+
+                    <button type="submit" class="btn btn-primary">
+                        🔍 Search
+                    </button>
+
+                    {% if search %}
+                        <a
+                            href="{{ url_for('admin') }}"
+                            class="btn btn-secondary"
+                        >
+                            Clear
+                        </a>
+                    {% endif %}
+
+                </div>
+
+            </form>
+
+
+            <!-- Users Table -->
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for user in users %}
+
+                        <tr>
+
+                            <!-- Serial Number -->
+                            <td>
+                                {{ loop.index }}
+                            </td>
+
+
+                            <!-- Database ID -->
+                            <td>
+                                {{ user.id }}
+                            </td>
+
+
+                            <!-- Full Name -->
+                            <td>
+                                {{ user.full_name }}
+                            </td>
+
+
+                            <!-- Username -->
+                            <td>
+                                {{ user.username }}
+                            </td>
+
+
+                            <!-- Email -->
+                            <td>
+                                {{ user.email }}
+                            </td>
+
+
+                            <!-- Role -->
+                            <td>
+
+                                {% if user.is_admin %}
+
+                                    <span class="badge bg-danger">
+                                        Admin
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        User
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Created Date -->
+                            <td>
+                                {{ user.created_at.strftime('%Y-%m-%d') }}
+                            </td>
+
+
+                            <!-- Action -->
+                            <td>
+
+                                {% if user.is_admin %}
+
+                                    <span class="text-muted">
+                                        Protected
+                                    </span>
+
+                                {% else %}
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for('delete_user', user_id=user.id) }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this user?');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-sm btn-danger"
+                                        >
+                                            🗑️ Delete
+                                        </button>
+
+                                    </form>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+
+                        {% else %}
+
+                        <!-- No Users -->
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="text-center"
+                            >
+                                No registered users found.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
