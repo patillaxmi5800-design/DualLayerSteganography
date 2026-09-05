@@ -36,6 +36,7 @@ from flask_login import (
 
 from PIL import Image, UnidentifiedImageError
 from werkzeug.utils import secure_filename
+from sqlalchemy import text
 
 from aes_module import (
     AESError,
@@ -157,6 +158,34 @@ def _remove_demo_account() -> None:
         db.session.commit()
 
 
+def _ensure_render_admin() -> None:
+    """Create or promote the Render administrator when bootstrap values are provided."""
+
+    admin_username = os.environ.get("ADMIN_USERNAME", "").strip()
+    admin_email = os.environ.get("ADMIN_EMAIL", "").strip().lower()
+    admin_password = os.environ.get("ADMIN_PASSWORD", "")
+
+    if not admin_username or not admin_email or not admin_password:
+        return
+
+    user = User.query.filter_by(username=admin_username).first()
+
+    if user is None:
+        user = User(
+            full_name="Laxmi Patil",
+            username=admin_username,
+            email=admin_email,
+            is_admin=True,
+        )
+        user.set_password(admin_password)
+        db.session.add(user)
+    else:
+        user.email = admin_email
+        user.is_admin = True
+
+    db.session.commit()
+
+
 def init_app_state() -> None:
     """Prepare directories and database."""
 
@@ -170,7 +199,7 @@ def init_app_state() -> None:
         # Add is_admin column if it is missing.
         try:
             db.session.execute(
-                db.text(
+                text(
                     "ALTER TABLE users ADD COLUMN IF NOT EXISTS "
                     "is_admin BOOLEAN NOT NULL DEFAULT FALSE"
                 )
@@ -181,6 +210,9 @@ def init_app_state() -> None:
 
         # Remove old demo account.
         _remove_demo_account()
+
+        # Create/promote Render administrator when bootstrap values are set.
+        _ensure_render_admin()
 
 
 init_app_state()
