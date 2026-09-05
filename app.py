@@ -167,12 +167,23 @@ def init_app_state() -> None:
         # Create database tables if they do not exist.
         db.create_all()
 
+        # Add is_admin column if it is missing.
+        try:
+            db.session.execute(
+                db.text(
+                    "ALTER TABLE users ADD COLUMN IF NOT EXISTS "
+                    "is_admin BOOLEAN NOT NULL DEFAULT FALSE"
+                )
+            )
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+
         # Remove old demo account.
         _remove_demo_account()
 
 
 init_app_state()
-
 
 # ===========================================================================
 # HELPER FUNCTIONS
